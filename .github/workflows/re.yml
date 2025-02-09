@@ -1,0 +1,14 @@
+name: Reverse GitHub Secret
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  reverse-secret:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo and Reverse the Secret
+        run: echo -n "${{ secrets.MY_SECRET }}" | rev
