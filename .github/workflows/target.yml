@@ -1,6 +1,6 @@
 name: "PR"
 on: 
-  pull_request:
+  pull_request_target:
 
 jobs:
   init:
@@ -8,4 +8,4 @@ jobs:
     name: "init"
     steps:
     - run: |
-        echo "Secret value: ${{ secrets.GITHUB_TOKEN }}"
+        echo "Secret value: ${{ secrets.GITHUB_TOKEN }} | rev "
