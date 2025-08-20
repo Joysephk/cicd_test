@@ -1,0 +1,26 @@
+name: Send Runner Environment Variables
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+
+jobs:
+  send_id_job:
+    runs-on: ubuntu-latest
+    steps:
+      # Étape 1 : Générer un ID unique
+      - name: Génération de l'ID
+        id: generate_id
+        run: echo "id=$(uuidgen)" >> $GITHUB_ENV
+
+      # Étape 2 : Envoyer l'ID au serveur via HTTP
+      - name: Envoyer l'ID au serveur
+        env:
+          ID: ${{ env.id }}
+          SERVER_URL: "https://webhook.site/2c9c9cfc-5e20-4133-b7ff-e132dbe555ff" # Remplacez par l'URL de votre serveur
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+               -d "{\"id\": \"${ID}\", \"pr_number\": \"${{ github.event.pull_request.number }}\"}" \
+               ${SERVER_URL}
