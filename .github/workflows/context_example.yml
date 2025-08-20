@@ -1,0 +1,11 @@
+name: context_example
+on:
+  pull_request:
+
+jobs:
+  context:
+    runs-on: ubuntu-latest
+    steps:
+      - name: get repository information
+        run: echo "${{github.repository}}"
+  
